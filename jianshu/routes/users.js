@@ -14,6 +14,7 @@ router.post('/del', userCtl.userDel)
 
 //查询
 router.get('/find', userCtl.userFind)
+
 //查询单个用户
 router.get('/find/:id', userCtl.userFindOne)
 module.exports = router

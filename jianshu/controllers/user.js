@@ -1,103 +1,33 @@
-let {User} = require('../models')
+let { User } = require("../models")
+let crud = require("./crudUtil/index")
 
 //添加
-const userAdd = async(ctx,next) => {
-  let {username = '',pwd = ''} = ctx.request.body
-  await User.create({username,pwd})
-  .then((result)=> {
-    if(result){
-      ctx.response.body = {
-        code:200,
-        msg: '添加成功',
-        data: result
-      }
-    }else {
-      ctx.response.body = {
-        code:300,
-        msg: '添加失败',
-      }
-    }
-  })
-  .catch((err) => {
-    ctx.response.body = {
-      code: 400,
-      msg: '添加出现异常'
-    }
-    console.error(err)
-  })
+const userAdd = async (ctx, next) => {
+  let { username = "", pwd = "" } = ctx.request.body
+  await crud.add(User, { username, pwd }, ctx)
 }
 //修改
-const userUpdate = async(ctx,next) => {
+const userUpdate = async (ctx, next) => {
   let params = ctx.request.body
-  await User.updateOne(
-    {'_id': params._id},
-    {
-      'username':params.username,
-      'pwd':params.pwd
-    }
+  await crud.update(
+    User,
+    { _id: params._id },
+    { username: params.username,pwd:params.pwd },
+    ctx
   )
-  .then((result)=> {
-    ctx.response.body = {
-      result,
-    }
-  })
-  .catch(err => {
-    ctx.response.body = {
-      code: 400,
-      msg: '修改出现异常'
-    }
-    console.error(err);
-  })
 }
 //删除
-const userDel = async(ctx,next) => {
-  let {id} = ctx.request.body._id
-  await User.findOneAndDelete(id)
-  .then(result => {
-    ctx.response.body = {
-      result
-    }
-  })
-  .catch(err => {
-    ctx.response.body = {
-      code: 400,
-      msg: '修改出现异常'
-    }
-    console.error(err);
-  })
+const userDel = async (ctx, next) => {
+  let {_id} = ctx.request.body
+  await crud.del(User, {_id}, ctx)
 }
 // 查询
-const userFind = async(ctx,next) => {
-  await User.find()
-  .then((result)=> {
-    ctx.response.body = {
-      result: result
-    }
-  })
-  .catch((err)=> {
-    ctx.response.body = {
-      code: 400,
-      msg: '查询出现异常'
-    }
-    console.error(err);
-  })
+const userFind = async (ctx, next) => {
+  await crud.find(User, null, ctx)
 }
 //查询单个
-const userFindOne = async(ctx,next) => {
-  let id = ctx.request.params
-  await User.findOne(id)
-  .then((result)=> {
-    ctx.response.body = {
-      result: result
-    }
-  })
-  .catch((err)=> {
-    ctx.response.body = {
-      code: 400,
-      msg: '查询单个出现异常'
-    }
-    console.error(err);
-  })
+const userFindOne = async (ctx, next) => {
+  await crud.findOne(User, {id:ctx.params}, ctx)
 }
 
 module.exports = {
@@ -105,5 +35,5 @@ module.exports = {
   userUpdate,
   userDel,
   userFind,
-  userFindOne
+  userFindOne,
 }
