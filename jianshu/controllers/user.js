@@ -21,7 +21,7 @@ const userDel = async (ctx, next) => {
   let {_id} = ctx.request.body
   await crud.del(User, {_id}, ctx)
 }
-// 查询
+//查询
 const userFind = async (ctx, next) => {
   await crud.find(User, null, ctx)
 }
@@ -29,7 +29,6 @@ const userFind = async (ctx, next) => {
 const userFindOne = async (ctx, next) => {
   await crud.findOne(User, {id:ctx.params}, ctx)
 }
-
 module.exports = {
   userAdd,
   userUpdate,

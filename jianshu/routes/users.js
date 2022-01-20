@@ -1,5 +1,6 @@
 const router = require('koa-router')()
 const userCtl = require('../controllers/user')
+const loginCtl = require('../controllers/login')
 
 router.prefix('/users')
 
@@ -17,4 +18,6 @@ router.get('/find', userCtl.userFind)
 
 //查询单个用户
 router.get('/find/:id', userCtl.userFindOne)
+
+router.post('/login', loginCtl.login)
 module.exports = router
