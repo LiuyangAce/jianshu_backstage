@@ -25,5 +25,7 @@ router.post('/login', loginCtl.userLogin)
 router.post('/reg', loginCtl.userReg)
 //验证
 router.post('/verify', loginCtl.userVerity)
+//修改密码
+router.post('/updatePwd', loginCtl.userPwdUpdate)
 
 module.exports = router

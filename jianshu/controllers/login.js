@@ -16,17 +16,19 @@ const userReg = async (ctx, next) => {
 }
 
 const userVerity = async (ctx, next) => {
-  console.log(00000,ctx.header.authorization);
   const token = ctx.header.authorization.replace('Bearer ','')
-  console.log(11111,token);
   let result = jwt.verify(token,'jianshu-server-jwt')
-  console.log(222222,result);
-  await loginUtil.verify(User, {username:result.username}, ctx)
+  await loginUtil.verify(User, {_id:result._id}, ctx)
+}
+
+const userPwdUpdate = async (ctx, next) => {
+  await loginUtil.updatePwd(User, {...ctx.request.body}, ctx)
 }
 
 
 module.exports = {
   userLogin,
   userReg,
-  userVerity
+  userVerity,
+  userPwdUpdate
 }

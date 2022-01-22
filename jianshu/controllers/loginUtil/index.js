@@ -6,8 +6,10 @@ const login = (model, where, ctx) => {
   .findOne(where)
   .then((result) => {
     if (result) {
+      // 通过_id和username生产token
       let token = jwt.sign({
-        username: ctx.request.body.username
+        username: result.username,
+        _id: result._id
       },'jianshu-server-jwt',{
         expiresIn: 3600 * 24 * 7
       })
@@ -81,6 +83,7 @@ const verify = (model, where, ctx) => {
       ctx.response.body = {
         code: 200,
         msg: "用户认证成功",
+        result
       }
     }else {
       ctx.response.body = {
@@ -98,9 +101,35 @@ const verify = (model, where, ctx) => {
   })
 }
 
+// 修改密码
+const updatePwd = (model, where, ctx) => {
+  return model
+  .updateOne({username: where.username},{pwd: where.pwd})
+  .then((result) => {
+    if(result.modifiedCount > 0){
+      ctx.response.body = {
+        code: 200,
+        msg: "密码修改成功"
+      }
+    } else {
+      ctx.response.body = {
+        code: 300,
+        msg: "密码修改失败"
+      }
+    }
+  })
+  .catch((err) => {
+    ctx.response.body = {
+      code: 500,
+      msg: "修改密码时出现异常",
+      err
+    }
+  })
+}
 module.exports = {
   login,
   findUsers,
   createUsers,
-  verify
+  verify,
+  updatePwd
 }
