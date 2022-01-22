@@ -5,13 +5,13 @@ const json = require('koa-json')
 const onerror = require('koa-onerror')
 const bodyparser = require('koa-bodyparser')
 const logger = require('koa-logger')
-const MongoConnect = require('./db')
 const cors = require('koa2-cors')
+const MongoConnect = require('./db')
 
 //连接数据库
 MongoConnect()
 
-const index = require('./routes/index')
+// const index = require('./routes/index')
 const users = require('./routes/users')
 
 // error handler
@@ -39,7 +39,7 @@ app.use(async (ctx, next) => {
 })
 
 // routes
-app.use(index.routes(), index.allowedMethods())
+// app.use(index.routes(), index.allowedMethods())
 app.use(users.routes(), users.allowedMethods())
 
 // error-handling

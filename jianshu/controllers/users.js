@@ -1,4 +1,4 @@
-let { User } = require("../models")
+let { User } = require("../models/users")
 let crud = require("./crudUtil/index")
 
 //添加
