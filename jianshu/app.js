@@ -31,12 +31,21 @@ app.use(views(__dirname + '/views', {
   extension: 'pug'
 }))
 
+
+// secret: 密钥
+// unless 哪些地方不进行jwt认证
+app.use(koajwt({
+  secret: 'jianshu-server-jwt'
+}).unless({
+  path: [/^\/users\/login/,/^\/users\/reg/,/^\/users\/verify/]
+}))
+
 // logger
 app.use(async (ctx, next) => {
   const start = new Date()
   await next()
   const ms = new Date() - start
-  console.log(`${ctx.method} ${ctx.url} - ${ms}ms`)
+  // console.log(`${ctx.method} ${ctx.url} - ${ms}ms`)
 })
 
 // routes

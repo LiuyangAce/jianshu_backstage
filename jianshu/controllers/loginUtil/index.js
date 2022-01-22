@@ -72,8 +72,35 @@ const createUsers = (model, where, ctx) => {
   })
 }
 
+// 验证用户
+const verify = (model, where, ctx) => {
+  return model
+  .findOne(where)
+  .then((result) => {
+    if(result) {
+      ctx.response.body = {
+        code: 200,
+        msg: "用户认证成功",
+      }
+    }else {
+      ctx.response.body = {
+        code: 500,
+        msg: "用户认证失败",
+      }
+    }
+  })
+  .catch((err) => {
+    ctx.response.body = {
+      code: 500,
+      msg: "用户认证失败",
+      err
+    }
+  })
+}
+
 module.exports = {
   login,
   findUsers,
-  createUsers
+  createUsers,
+  verify
 }

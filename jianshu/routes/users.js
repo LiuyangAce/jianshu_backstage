@@ -23,5 +23,7 @@ router.get('/find/:id', userCtl.userFindOne)
 router.post('/login', loginCtl.userLogin)
 //注册
 router.post('/reg', loginCtl.userReg)
+//验证
+router.post('/verify', loginCtl.userVerity)
 
 module.exports = router
