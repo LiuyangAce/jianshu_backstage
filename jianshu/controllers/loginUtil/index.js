@@ -19,7 +19,7 @@ const login = (model, where, ctx) => {
     }else {
       ctx.response.body = {
         code: 300,
-        msg: '登录失败',
+        msg: '登录失败,用户名或密码错误',
       }
     }
   })

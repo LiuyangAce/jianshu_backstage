@@ -7,6 +7,7 @@ const bodyparser = require('koa-bodyparser')
 const logger = require('koa-logger')
 const cors = require('koa2-cors')
 const MongoConnect = require('./db')
+const koajwt = require('koa-jwt') // 引入koa-jwt
 
 //连接数据库
 MongoConnect()

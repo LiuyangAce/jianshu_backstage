@@ -11,7 +11,6 @@ const userLogin = async (ctx, next) => {
 
 const userReg = async (ctx, next) => {
   const exist = await loginUtil.findUsers(User,{username: ctx.request.body.username},ctx)
-  console.log(exist);
   if (!exist) await loginUtil.createUsers(User,ctx.request.body,ctx)
 }
 
