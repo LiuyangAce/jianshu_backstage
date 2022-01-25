@@ -12,8 +12,10 @@ const koajwt = require('koa-jwt') // 引入koa-jwt
 //连接数据库
 MongoConnect()
 
+// 引入路由模块
 // const index = require('./routes/index')
 const users = require('./routes/users')
+const upload = require('./routes/upload')
 
 // error handler
 onerror(app)
@@ -45,12 +47,13 @@ app.use(async (ctx, next) => {
   const start = new Date()
   await next()
   const ms = new Date() - start
-  // console.log(`${ctx.method} ${ctx.url} - ${ms}ms`)
+  console.log(`${ctx.method} ${ctx.url} - ${ms}ms`)
 })
 
 // routes
 // app.use(index.routes(), index.allowedMethods())
 app.use(users.routes(), users.allowedMethods())
+app.use(upload.routes(), upload.allowedMethods())
 
 // error-handling
 app.on('error', (err, ctx) => {
