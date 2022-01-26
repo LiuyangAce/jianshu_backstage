@@ -33,8 +33,11 @@ let upload = multer({storage})
 
 // 上传文件的接口
 router.post('/img', upload.single('myfile'), async ctx => {
+  let path = ctx.req.file.path
+  let replaceStr = "\\\\"
+  path = ctx.origin + '' + path.replace('public','').replace(new RegExp(replaceStr,'g'),'/')
   ctx.body = {
-    date: ctx.req.file
+    data: path
   }
 })
 
