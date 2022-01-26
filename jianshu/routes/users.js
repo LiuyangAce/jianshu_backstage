@@ -7,8 +7,8 @@ router.prefix('/users')
 //添加
 router.post('/add', userCtl.userAdd)
 
-//修改
-router.post('/update', userCtl.userUpdate)
+//修改个人资料
+router.post('/update/personal', userCtl.userUpdatePersonal)
 
 //删除
 router.post('/del', userCtl.userDel)

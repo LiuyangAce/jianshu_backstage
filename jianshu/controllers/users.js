@@ -6,13 +6,19 @@ const userAdd = async (ctx, next) => {
   let { username = "", pwd = "" } = ctx.request.body
   await crud.add(User, { username, pwd }, ctx)
 }
-//修改
-const userUpdate = async (ctx, next) => {
-  let params = ctx.request.body
+//修改 个人资料
+const userUpdatePersonal = async (ctx, next) => {
+  let {_id,avatar='',sex='',desc='',phone='',email=''} = ctx.request.body
   await crud.update(
     User,
-    { _id: params._id },
-    { username: params.username,pwd:params.pwd },
+    { _id},
+    { 
+      avatar,
+      sex,
+      desc,
+      phone,
+      email
+    },
     ctx
   )
 }
@@ -31,7 +37,7 @@ const userFindOne = async (ctx, next) => {
 }
 module.exports = {
   userAdd,
-  userUpdate,
+  userUpdatePersonal,
   userDel,
   userFind,
   userFindOne,

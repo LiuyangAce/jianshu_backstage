@@ -41,16 +41,24 @@ const update = (model, where, params, ctx) => {
   return model
     .updateOne(where, params)
     .then((result) => {
-      ctx.response.body = {
-        result,
+      if(result.modifiedCount > 0){
+        ctx.response.body = {
+          code: 200,
+          msg: '个人资料修改成功'
+        }
+      }else {
+        ctx.response.body = {
+          code: 300,
+          msg: '个人资料修改失败'
+        }
       }
     })
     .catch((err) => {
       ctx.response.body = {
         code: 400,
-        msg: "修改出现异常",
+        msg: "个人资料修改出现异常",
+        err
       }
-      console.error(err)
     })
 }
 
