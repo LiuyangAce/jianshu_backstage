@@ -22,7 +22,7 @@ const articleSchema = new mongoose.Schema({
   },
   author: String
 })
-const Article = mongoose.model('article',articleSchema)
+const Article = mongoose.model('articles',articleSchema)
 
 module.exports = {
   Article
