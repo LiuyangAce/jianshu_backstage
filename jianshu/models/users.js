@@ -6,7 +6,7 @@ const userSchema = new mongoose.Schema({
   username: String,
   pwd: {
     type: String,
-    select: false
+    select: false // 查询的时候不会被显示出来
   },
   avatar: {
     type: String,
