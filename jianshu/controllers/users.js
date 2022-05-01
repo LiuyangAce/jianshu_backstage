@@ -61,7 +61,8 @@ const userFind = async (ctx, next) => {
 }
 //查询单个用户
 const userFindOne = async (ctx, next) => {
-  await usersUtil.findOne(User, {id:ctx.params}, ctx)
+  console.log(ctx.request.body._id);
+  await usersUtil.findOne(User, {_id:ctx.request.body._id}, ctx)
 }
 module.exports = {
   userAdd,

@@ -16,7 +16,8 @@ const login = (model, where, ctx) => {
       ctx.response.body = {
         code: 200,
         msg: '登录成功',
-        token
+        token,
+        result
       }
     }else {
       ctx.response.body = {
@@ -225,6 +226,7 @@ const find = (model, where, ctx) => {
   return model
     .find(where)
     .then((result) => {
+      console.log(123,ctx.params);
       ctx.response.body = {
         result: result,
       }
@@ -249,6 +251,7 @@ const findOne = (model, where, ctx) => {
   return model
     .findOne(where)
     .then((result) => {
+      console.log(123,ctx.params);
       ctx.response.body = {
         result: result,
       }

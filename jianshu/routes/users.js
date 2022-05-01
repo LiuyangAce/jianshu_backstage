@@ -16,7 +16,7 @@ router.get('/find', userCtl.userFind)
 router.post('/update/personal', userCtl.userUpdatePersonal)
 
 //查询单个用户
-router.get('/find/:id', userCtl.userFindOne)
+router.post('/findOne', userCtl.userFindOne)
 
 //登录 已验证
 router.post('/login', userCtl.userLogin)
