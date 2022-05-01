@@ -1,130 +1,132 @@
-const jwt = require('jsonwebtoken')
+const jwt = require("jsonwebtoken")
 
 // 用户登录
 const login = (model, where, ctx) => {
   return model
-  .findOne(where)
-  .then((result) => {
-    if (result) {
-      // 通过_id和username生产token
-      let token = jwt.sign({
-        username: result.username,
-        _id: result._id
-      },'jianshu-server-jwt',{
-        expiresIn: 3600 * 24 * 7
-      })
-      ctx.response.body = {
-        code: 200,
-        msg: '登录成功',
-        token,
-        result
+    .findOne(where)
+    .then((result) => {
+      if (result) {
+        // 通过_id和username生产token
+        let token = jwt.sign(
+          {
+            username: result.username,
+            _id: result._id,
+          },
+          "jianshu-server-jwt",
+          {
+            expiresIn: 3600 * 24 * 7,
+          }
+        )
+        ctx.response.body = {
+          code: 200,
+          msg: "登录成功",
+          token,
+          result,
+        }
+      } else {
+        ctx.response.body = {
+          code: 300,
+          msg: "登录失败,用户名或密码错误",
+        }
       }
-    }else {
+    })
+    .catch((err) => {
       ctx.response.body = {
-        code: 300,
-        msg: '登录失败,用户名或密码错误',
+        code: 500,
+        msg: "登录时出现异常",
+        err,
       }
-    }
-  })
-  .catch((err) => {
-    ctx.response.body = {
-      code: 500,
-      msg: '登录时出现异常',
-      err
-    }
-  })
+    })
 }
 
 // 用户注册
 const findUsers = (model, where, ctx) => {
-  return model
-    .findOne(where)
-    .then((result) => {
-      return result ? 
-      ctx.response.body = {
-        code: 300,
-        msg: "用户名已存在",
-      }
+  return model.findOne(where).then((result) => {
+    return result
+      ? (ctx.response.body = {
+          code: 300,
+          msg: "用户名已存在",
+        })
       : false
-    })
+  })
 }
 // 创建用户
 const createUsers = (model, where, ctx) => {
   return model
-  .create(where)
-  .then((result) => {
-    if (result) {
-      ctx.response.body = {
-        code: 200,
-        msg: "添加成功",
+    .create(where)
+    .then((result) => {
+      if (result) {
+        ctx.response.body = {
+          code: 200,
+          msg: "添加成功",
+        }
+      } else {
+        ctx.response.body = {
+          code: 300,
+          msg: "添加失败",
+        }
       }
-    } else {
+    })
+    .catch((err) => {
       ctx.response.body = {
-        code: 300,
-        msg: "添加失败",
+        code: 400,
+        msg: "添加出现异常",
       }
-    }
-  })
-  .catch((err) => {
-    ctx.response.body = {
-      code: 400,
-      msg: "添加出现异常",
-    }
-    console.error(err)
-  })
+      console.error(err)
+    })
 }
 
 // 验证用户
 const verify = (model, where, ctx) => {
   return model
-  .findOne(where)
-  .then((result) => {
-    if(result) {
-      ctx.response.body = {
-        code: 200,
-        msg: "用户认证成功",
-        result
+    .findOne(where)
+    .then((result) => {
+      if (result) {
+        ctx.response.body = {
+          code: 200,
+          msg: "用户认证成功",
+          result,
+        }
+      } else {
+        ctx.response.body = {
+          code: 500,
+          msg: "用户认证失败",
+        }
       }
-    }else {
+    })
+    .catch((err) => {
       ctx.response.body = {
         code: 500,
         msg: "用户认证失败",
+        err,
       }
-    }
-  })
-  .catch((err) => {
-    ctx.response.body = {
-      code: 500,
-      msg: "用户认证失败",
-      err
-    }
-  })
+    })
 }
 
 // 修改密码
 const updatePwd = (model, where, ctx) => {
   return model
-  .updateOne({username: where.username},{pwd: where.pwd})
-  .then((result) => {
-    if(result.modifiedCount > 0){
-      ctx.response.body = {
-        code: 200,
-        msg: "密码修改成功"
+    .updateOne({ username: where.username }, { pwd: where.pwd })
+    .then((result) => {
+      if (result.modifiedCount > 0) {
+        ctx.response.body = {
+          code: 200,
+          msg: "密码修改成功",
+        }
+      } else {
+        ctx.response.body = {
+          code: 300,
+          msg: "密码修改失败",
+        }
       }
-    } else {
+    })
+    .catch((err) => {
       ctx.response.body = {
-        code: 300,
-        msg: "密码修改失败"
+        code: 500,
+        msg: "修改密码时出现异常",
+        err,
       }
-    }
-  })
-  .catch((err) => {
-    ctx.response.body = {
-      code: 500,
-      msg: "修改密码时出现异常",
-      err
-    }
-  })
+    })
 }
 //=================
 
@@ -171,15 +173,15 @@ const update = (model, where, params, ctx) => {
   return model
     .updateOne(where, params)
     .then((result) => {
-      if(result.modifiedCount > 0){
+      if (result.modifiedCount > 0) {
         ctx.response.body = {
           code: 200,
-          msg: '个人资料修改成功'
+          msg: "个人资料修改成功",
         }
-      }else {
+      } else {
         ctx.response.body = {
           code: 300,
-          msg: '个人资料修改失败'
+          msg: "个人资料修改失败",
         }
       }
     })
@@ -187,7 +189,7 @@ const update = (model, where, params, ctx) => {
       ctx.response.body = {
         code: 400,
         msg: "个人资料修改出现异常",
-        err
+        err,
       }
     })
 }
@@ -226,9 +228,10 @@ const find = (model, where, ctx) => {
   return model
     .find(where)
     .then((result) => {
-      console.log(123,ctx.params);
       ctx.response.body = {
-        result: result,
+        code: 200,
+        msg: '查询成功',
+        data: result,
       }
     })
     .catch((err) => {
@@ -251,9 +254,10 @@ const findOne = (model, where, ctx) => {
   return model
     .findOne(where)
     .then((result) => {
-      console.log(123,ctx.params);
       ctx.response.body = {
-        result: result,
+        code: 200,
+        msg: '查询成功',
+        data: result,
       }
     })
     .catch((err) => {
@@ -276,5 +280,5 @@ module.exports = {
   findUsers,
   createUsers,
   verify,
-  updatePwd
+  updatePwd,
 }

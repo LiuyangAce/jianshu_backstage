@@ -37,6 +37,7 @@ const userAdd = async (ctx, next) => {
 //修改个人资料
 const userUpdatePersonal = async (ctx, next) => {
   let {_id,avatar='',sex='',desc='',phone='',email=''} = ctx.request.body
+  console.log(_id,avatar,sex,desc,phone,email);
   await usersUtil.update(
     User,
     { _id},
@@ -61,7 +62,6 @@ const userFind = async (ctx, next) => {
 }
 //查询单个用户
 const userFindOne = async (ctx, next) => {
-  console.log(ctx.request.body._id);
   await usersUtil.findOne(User, {_id:ctx.request.body._id}, ctx)
 }
 module.exports = {
