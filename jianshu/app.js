@@ -14,6 +14,7 @@ MongoConnect()
 
 // 引入路由模块
 const users = require('./routes/users')
+const defect = require('./routes/defect')
 const upload = require('./routes/upload')
 
 // error handler
@@ -52,6 +53,7 @@ app.use(async (ctx, next) => {
 // routes
 // app.use(index.routes(), index.allowedMethods())
 app.use(users.routes(), users.allowedMethods())
+app.use(defect.routes(), defect.allowedMethods())
 app.use(upload.routes(), upload.allowedMethods())
 
 // error-handling
