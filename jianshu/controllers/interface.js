@@ -22,10 +22,16 @@ const interfaceUpdate = async (ctx, next) => {
 const interfaceDel = async (ctx, next) => {
   await interfaceUtil.del(Interface, {_id:ctx.request.body._id}, ctx)
 }
+
+const interfaceFindModule = async (ctx, next) => {
+  await interfaceUtil.findModule(Interface,ctx)
+}
 module.exports = {
   interfaceFindAll,
   interfaceAdd,
   interfaceFindAllByCondition,
   interfaceUpdate,
-  interfaceDel
+  interfaceDel,
+
+  interfaceFindModule
 }

@@ -18,6 +18,7 @@ router.post('/add', interfaceCtl.interfaceAdd)
 //删除interface
 router.post('/del', interfaceCtl.interfaceDel)
 
-
+//interface 模块类别
+router.get('/module', interfaceCtl.interfaceFindModule)
 
 module.exports = router

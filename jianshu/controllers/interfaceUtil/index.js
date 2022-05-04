@@ -211,11 +211,79 @@ const del = (model, where, ctx) => {
       console.error(err)
     })
 }
+
+const findModule = async (model,ctx) => {
+  // let module = []
+  // await model
+  //   .distinct('interfaceType')
+  //   .then((res) => {
+  //     module = res
+  //   })
+  // let arr = []
+  // module.forEach(element => {
+  //   arr.push({'interfaceType':element})
+  // });
+  // let obj = {}
+
+  // arr.forEach(element => {
+  //   model.find(element).count()
+  //   .then((res) => {
+  //     obj[element.interfaceType] = res
+  //     console.log(obj);
+  //   })
+  // }); 
+  
+  let userModule = null
+  let xxModule = null
+  let interfaceModule = null
+  let defectModule = null
+
+  await model
+  .find({ interfaceType: "用户模块" })
+  .count()
+  .then((res) => {
+    userModule = res
+  })
+
+  await model
+  .find({ interfaceType: "xx模块" })
+  .count()
+  .then((res) => {
+    xxModule = res
+  })
+
+  await model
+  .find({ interfaceType: "接口模块" })
+  .count()
+  .then((res) => {
+    interfaceModule = res
+  })
+
+  await model
+  .find({ interfaceType: "接口模块" })
+  .count()
+  .then((res) => {
+    defectModule = res
+  })
+
+  ctx.response.body = {
+    code: 200,
+    msg: '查询成功',
+    data: {
+      userModule,
+      xxModule,
+      interfaceModule,
+      defectModule
+    }
+  }
+}
 module.exports = {
   del,
   add,
   findAll,
   findAllByCondition,
-  update
+  update,
+
+  findModule
 }
 
