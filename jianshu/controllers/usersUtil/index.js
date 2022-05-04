@@ -230,7 +230,7 @@ const find = (model, where, ctx) => {
     .then((result) => {
       ctx.response.body = {
         code: 200,
-        msg: '查询成功',
+        msg: "查询成功",
         data: result,
       }
     })
@@ -256,7 +256,7 @@ const findOne = (model, where, ctx) => {
     .then((result) => {
       ctx.response.body = {
         code: 200,
-        msg: '查询成功',
+        msg: "查询成功",
         data: result,
       }
     })
@@ -267,6 +267,39 @@ const findOne = (model, where, ctx) => {
       }
       console.error(err)
     })
+}
+
+const findComponent = async (model, ctx) => {
+  let frontendDeveloper = null
+  let backendDeveloper = null
+  let tester = null
+  await model
+    .find({ type: "测试人员" })
+    .count()
+    .then((res) => {
+      tester = res
+    })
+  await model
+    .find({ type: "前端开发人员" })
+    .count()
+    .then((res) => {
+      frontendDeveloper = res
+    })
+  await model
+    .find({ type: "后端开发人员" })
+    .count()
+    .then((res) => {
+      backendDeveloper = res
+    })
+  ctx.response.body = {
+    code: 200,
+    msg: '查询成功',
+    data: {
+      frontendDeveloper,
+      backendDeveloper,
+      tester
+    }
+  }
 }
 
 module.exports = {
@@ -281,4 +314,6 @@ module.exports = {
   createUsers,
   verify,
   updatePwd,
+
+  findComponent,
 }

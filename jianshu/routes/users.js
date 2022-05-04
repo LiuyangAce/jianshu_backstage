@@ -33,4 +33,7 @@ router.post('/verify', userCtl.userVerity)
 //修改密码 已验证
 router.post('/updatePwd', userCtl.userPwdUpdate)
 
+//查询人员组成
+router.get('/component', userCtl.userComponent)
+
 module.exports = router

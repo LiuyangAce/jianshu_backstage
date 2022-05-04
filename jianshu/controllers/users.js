@@ -70,6 +70,11 @@ const userFind = async (ctx, next) => {
 const userFindOne = async (ctx, next) => {
   await usersUtil.findOne(User, {_id:ctx.request.body._id}, ctx)
 }
+
+//查看人员组成
+const userComponent = async (ctx, next) => {
+  await usersUtil.findComponent(User,ctx)
+}
 module.exports = {
   userAdd,
   userUpdatePersonal,
@@ -80,5 +85,7 @@ module.exports = {
   userLogin,
   userReg,
   userVerity,
-  userPwdUpdate
+  userPwdUpdate,
+
+  userComponent
 }

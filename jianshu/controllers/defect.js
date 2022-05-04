@@ -29,10 +29,16 @@ const defectUpdateDefect = async (ctx, next) => {
 const defectFindInfo = async (ctx, next) => {
   await defectUtil.findInfo(Defect,null, ctx)
 }
+
+const defectTypes = async (ctx, next) => {
+  await defectUtil.findTypes(Defect, ctx)
+}
 module.exports = {
   defectAdd,
   defectFindAll,
   defectFindAllByCondition,
   defectUpdateDefect,
-  defectFindInfo
+  defectFindInfo,
+
+  defectTypes
 }

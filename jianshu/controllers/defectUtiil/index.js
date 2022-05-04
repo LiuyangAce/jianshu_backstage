@@ -214,28 +214,62 @@ const findInfo = async (model, where, ctx) => {
     })
   let finishDefect = null
   await model
-    .find({state: "finish"})
+    .find({ state: "finish" })
     .count()
     .then((res) => {
       finishDefect = res
     })
   let hasOwnerDefect = null
-  
+
   await model
-    .find({owner:{$exists:false}})
+    .find({ owner: { $exists: false } })
     .count()
     .then((res) => {
       hasOwnerDefect = res
     })
+  ctx.response.body = {
+    code: 200,
+    msg: "查询成功",
+    data: {
+      total, // 总缺陷
+      activeDefect, // 未完成
+      finishDefect, // 已完成
+      hasOwnerDefect, //已分配
+      noOwnerDefect: total - hasOwnerDefect, //未分配
+    },
+  }
+}
+
+const findTypes = async (model, ctx) => {
+  let low = null
+  let mid = null
+  let high = null
+  await model
+    .find({ defectType: "low" })
+    .count()
+    .then((res) => {
+      low = res
+    })
+  await model
+    .find({ defectType: "mid" })
+    .count()
+    .then((res) => {
+      mid = res
+    })
+  await model
+    .find({ defectType: "high" })
+    .count()
+    .then((res) => {
+      high = res
+    })
+    
     ctx.response.body = {
       code: 200,
-      msg: "查询成功",
+      msg: '查询成功',
       data: {
-        total, // 总缺陷
-        activeDefect, // 未完成
-        finishDefect, // 已完成
-        hasOwnerDefect, //已分配
-        noOwnerDefect: total -hasOwnerDefect //未分配
+        low,
+        mid,
+        high
       }
     }
 }
@@ -245,4 +279,6 @@ module.exports = {
   findAllByCondition,
   update,
   findInfo,
+
+  findTypes
 }

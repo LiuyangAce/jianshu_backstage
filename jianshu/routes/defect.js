@@ -17,6 +17,9 @@ router.post('/add',defectCtl.defectAdd)
 
 // panel 查询
 router.get('/findInfo', defectCtl.defectFindInfo)
+
+// panel 查询缺陷的各个优先级
+router.get('/findDefectTypes', defectCtl.defectTypes)
 module.exports = router
 
 
