@@ -15,6 +15,8 @@ router.post('/update',defectCtl.defectUpdateDefect)
 // 新增缺陷
 router.post('/add',defectCtl.defectAdd)
 
+// panel 查询
+router.get('/findInfo', defectCtl.defectFindInfo)
 module.exports = router
 
 

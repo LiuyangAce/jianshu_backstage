@@ -172,13 +172,13 @@ const update = async (model, where, params, ctx) => {
       oldState = result.state
     })
     .catch((err) => {
-      console.log(err);
+      console.log(err)
     })
-    if (oldState === "active" && params.state === "finish") {
-      params.endTime = new Date()
-    }else if (oldState === "finish" && params.state === "active") {
-      params.endTime = ''
-    }
+  if (oldState === "active" && params.state === "finish") {
+    params.endTime = new Date()
+  } else if (oldState === "finish" && params.state === "active") {
+    params.endTime = ""
+  }
   await model
     .updateOne(where, params)
     .then((result) => {
@@ -195,9 +195,54 @@ const update = async (model, where, params, ctx) => {
       }
     })
 }
+
+const findInfo = async (model, where, ctx) => {
+  let total = null
+  // 总缺陷
+  await model
+    .find()
+    .count()
+    .then((res) => {
+      total = res
+    })
+  let activeDefect = null
+  await model
+    .find({ state: "active" })
+    .count()
+    .then((res) => {
+      activeDefect = res
+    })
+  let finishDefect = null
+  await model
+    .find({state: "finish"})
+    .count()
+    .then((res) => {
+      finishDefect = res
+    })
+  let hasOwnerDefect = null
+  
+  await model
+    .find({owner:{$exists:false}})
+    .count()
+    .then((res) => {
+      hasOwnerDefect = res
+    })
+    ctx.response.body = {
+      code: 200,
+      msg: "查询成功",
+      data: {
+        total, // 总缺陷
+        activeDefect, // 未完成
+        finishDefect, // 已完成
+        hasOwnerDefect, //已分配
+        noOwnerDefect: total -hasOwnerDefect //未分配
+      }
+    }
+}
 module.exports = {
   add,
   findAll,
   findAllByCondition,
   update,
+  findInfo,
 }
