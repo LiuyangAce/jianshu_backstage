@@ -12,6 +12,9 @@ router.post('/del', userCtl.userDel)
 //查询 已验证
 router.get('/find', userCtl.userFind)
 
+// 查询开发人员用户
+// router.post('/findRD', userCtl.userFindRD)
+
 //修改个人资料 已验证
 router.post('/update/personal', userCtl.userUpdatePersonal)
 

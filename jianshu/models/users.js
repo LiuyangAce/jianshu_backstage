@@ -27,6 +27,10 @@ const userSchema = new mongoose.Schema({
   email: {
     type: String,
     default: ''
+  },
+  type: {
+    type: String,
+    enum: ['测试人员','前端开发人员','后端开发人员']
   }
 })
 const User = mongoose.model('users',userSchema)

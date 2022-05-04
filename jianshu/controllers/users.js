@@ -31,8 +31,8 @@ const userPwdUpdate = async (ctx, next) => {
 
 //添加用户
 const userAdd = async (ctx, next) => {
-  let { username = "", pwd = "" } = ctx.request.body
-  await usersUtil.add(User, { username, pwd }, ctx)
+  let { username = "", pwd = "",type="" } = ctx.request.body
+  await usersUtil.add(User, { username, pwd, type }, ctx)
 }
 //修改个人资料
 const userUpdatePersonal = async (ctx, next) => {
@@ -60,6 +60,12 @@ const userDel = async (ctx, next) => {
 const userFind = async (ctx, next) => {
   await usersUtil.find(User, null, ctx)
 }
+
+// //查询所有用户
+// const userFind = async (ctx, next) => {
+//   await usersUtil.find(User, null, ctx)
+// }
+
 //查询单个用户
 const userFindOne = async (ctx, next) => {
   await usersUtil.findOne(User, {_id:ctx.request.body._id}, ctx)
