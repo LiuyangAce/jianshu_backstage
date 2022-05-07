@@ -37,7 +37,8 @@ const findAll = async (model, where, ctx) => {
   // 计算起始位置
   let start = (page - 1) * pageSize
 
-  await model.find()
+  await model
+    .find()
     .skip(start)
     .limit(pageSize)
     .then((rel) => {
@@ -81,7 +82,8 @@ const findAllByCondition = async (model, where, ctx) => {
   // let pageSize = 10
   //计算总页数
   let count = 0
-  await model.find(where.condition)
+  await model
+    .find(where.condition)
     .count()
     .then((rel) => {
       count = rel
@@ -104,7 +106,8 @@ const findAllByCondition = async (model, where, ctx) => {
   // 计算起始位置
   let start = (page - 1) / pageSize
 
-  await model.find(where.condition)
+  await model
+    .find(where.condition)
     .skip(start)
     .limit(pageSize)
     .then((rel) => {
@@ -120,7 +123,7 @@ const findAllByCondition = async (model, where, ctx) => {
       } else {
         ctx.body = {
           code: 300,
-          msg: "没有查询到接口"
+          msg: "没有查询到接口",
         }
       }
     })
@@ -169,13 +172,13 @@ const update = async (model, where, params, ctx) => {
       oldState = result.interfaceState
     })
     .catch((err) => {
-      console.log(err);
+      console.log(err)
     })
-    if (oldState === "未完成" && params.interfaceState === "已完成") {
-      params.endTime = new Date()
-    }else if (oldState === "已完成" && params.interfaceState === "未完成") {
-      params.endTime = ''
-    }
+  if (oldState === "未完成" && params.interfaceState === "已完成") {
+    params.endTime = new Date()
+  } else if (oldState === "已完成" && params.interfaceState === "未完成") {
+    params.endTime = ""
+  }
   await model
     .updateOne(where, params)
     .then((result) => {
@@ -193,7 +196,7 @@ const update = async (model, where, params, ctx) => {
     })
 }
 
-
+// 删除
 const del = (model, where, ctx) => {
   return model
     .findOneAndDelete(where)
@@ -212,7 +215,7 @@ const del = (model, where, ctx) => {
     })
 }
 
-const findModule = async (model,ctx) => {
+const findModule = async (model, ctx) => {
   // let module = []
   // await model
   //   .distinct('interfaceType')
@@ -231,50 +234,102 @@ const findModule = async (model,ctx) => {
   //     obj[element.interfaceType] = res
   //     console.log(obj);
   //   })
-  // }); 
-  
-  let userModule = null
-  let xxModule = null
-  let interfaceModule = null
-  let defectModule = null
+  // });
+  let moduleSort = null
+  let userModuleDone = null
+  let userModuleTodo = null
+  let xxModuleDone = null
+  let xxModuleTodo = null
+  let interfaceModuleDone = null
+  let interfaceModuleTodo = null
+  let defectModuleDone = null
+  let defectModuleTodo = null
 
   await model
-  .find({ interfaceType: "用户模块" })
-  .count()
-  .then((res) => {
-    userModule = res
-  })
+    .find({ interfaceType: "用户模块" })
+    .find({ interfaceState: "已完成" })
+    .count()
+    .then((res) => {
+      userModuleDone = res
+    })
 
   await model
-  .find({ interfaceType: "xx模块" })
-  .count()
-  .then((res) => {
-    xxModule = res
-  })
+    .find({ interfaceType: "用户模块" })
+    .find({ interfaceState: "未完成" })
+    .count()
+    .then((res) => {
+      userModuleTodo = res
+    })
 
   await model
-  .find({ interfaceType: "接口模块" })
-  .count()
-  .then((res) => {
-    interfaceModule = res
-  })
+    .find({ interfaceType: "xx模块" })
+    .find({ interfaceState: "已完成" })
+    .count()
+    .then((res) => {
+      xxModuleDone = res
+    })
 
   await model
-  .find({ interfaceType: "接口模块" })
-  .count()
-  .then((res) => {
-    defectModule = res
+    .find({ interfaceType: "xx模块" })
+    .find({ interfaceState: "未完成" })
+    .count()
+    .then((res) => {
+      xxModuleTodo = res
+    })
+
+  await model
+    .find({ interfaceType: "接口模块" })
+    .find({ interfaceState: "已完成" })
+    .count()
+    .then((res) => {
+      interfaceModuleDone = res
+    })
+
+  await model
+    .find({ interfaceType: "接口模块" })
+    .find({ interfaceState: "未完成" })
+    .count()
+    .then((res) => {
+      interfaceModuleTodo = res
+    })
+  await model
+    .find({ interfaceType: "缺陷模块" })
+    .find({ interfaceState: "已完成" })
+    .count()
+    .then((res) => {
+      defectModuleDone = res
+    })
+
+  await model
+    .find({ interfaceType: "缺陷模块" })
+    .find({ interfaceState: "未完成" })
+    .count()
+    .then((res) => {
+      defectModuleTodo = res
+    })
+
+  await model.distinct("interfaceType").then((res) => {
+    moduleSort = res
   })
 
   ctx.response.body = {
     code: 200,
-    msg: '查询成功',
+    msg: "查询成功",
     data: {
-      userModule,
-      xxModule,
-      interfaceModule,
-      defectModule
-    }
+      todoList: [
+        xxModuleTodo,
+        interfaceModuleTodo,
+        userModuleTodo,
+        defectModuleTodo,
+      ],
+      doneList: [
+        xxModuleDone,
+        interfaceModuleDone,
+        userModuleDone,
+        defectModuleDone,
+      ],
+      moduleSort
+    },
   }
 }
 module.exports = {
@@ -284,6 +339,5 @@ module.exports = {
   findAllByCondition,
   update,
 
-  findModule
+  findModule,
 }
-

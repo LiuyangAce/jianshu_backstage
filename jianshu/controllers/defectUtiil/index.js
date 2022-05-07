@@ -222,7 +222,7 @@ const findInfo = async (model, where, ctx) => {
   let hasOwnerDefect = null
 
   await model
-    .find({ owner: { $exists: false } })
+    .find({ owner: { $exists: true } })
     .count()
     .then((res) => {
       hasOwnerDefect = res

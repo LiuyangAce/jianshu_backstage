@@ -250,6 +250,7 @@ const find = (model, where, ctx) => {
  * @param {*} ctx
  * @return {*}
  */
+// 查询
 const findOne = (model, where, ctx) => {
   return model
     .findOne(where)
@@ -291,6 +292,7 @@ const findComponent = async (model, ctx) => {
     .then((res) => {
       backendDeveloper = res
     })
+  
   ctx.response.body = {
     code: 200,
     msg: '查询成功',
